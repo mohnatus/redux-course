@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const TestComponent = () => <p>просто render</p>
+const TestComponent = () => <p>test render</p>
 
 function App() {
   return (
