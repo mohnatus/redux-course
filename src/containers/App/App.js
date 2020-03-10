@@ -4,12 +4,13 @@ import { User } from '../../components/User/User';
 import { Page } from '../../components/Page/Page';
 
 import { getPhotos } from '../../actions/PageActions';
+import { handleLogin } from '../../actions/UserActions';
 
-function App({ user, page, getPhotosAction }) {
+function App({ user, page, getPhotosAction, handleLoginAction }) {
 	return (
 		<div className="app">
 			<Page {...page} getPhotos={getPhotosAction} />
-			<User name={user.name} />
+			<User {...user} handleLogin={handleLoginAction} />
 		</div>
 	);
 }
@@ -24,6 +25,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
 	return {
 		getPhotosAction: year => dispatch(getPhotos(year)),
+		handleLoginAction: () => dispatch(handleLogin()),
 	};
 };
 
