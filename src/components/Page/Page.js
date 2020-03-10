@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getLastYears } from '../../util/date';
 
-export function Page({ year, photos, getPhotos, isFetching, error }) {
+export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 	const yearClickHandler = e => {
+		if (!name) return;
 		const year = +e.currentTarget.innerText;
 		getPhotos(year);
 	};
 
-	const years = [2014, 2015, 2016, 2017, 2018];
-
 	const getTemplate = () => {
+		if (!name) {
+			return <p>Авторизуйтесь, чтобы смотреть фотографии</p>;
+		}
+
 		if (error) {
 			return <p className="error">Во время загрузки фото произошла ошибка</p>;
 		}
@@ -32,20 +36,32 @@ export function Page({ year, photos, getPhotos, isFetching, error }) {
 		);
 	};
 
+	const years = getLastYears(5);
+
 	return (
 		<div className="ib page">
-			<p>
-				{years.map(year => {
+			<div className="filters">
+				{years.map(btnYear => {
+					const classes = ['btn'];
+					if (year === btnYear) classes.push('active');
 					return (
-						<button key={year} onClick={yearClickHandler} className="btn ">
-							{year}
+						<button
+							key={btnYear}
+							onClick={yearClickHandler}
+							className={classes.join(' ')}
+							disabled={!name}
+						>
+							{btnYear}
 						</button>
 					);
 				})}
-			</p>
-			<h3>
-				{year} [{photos.length}]
-			</h3>
+			</div>
+			{name ? (
+				<h3>
+					{year} [{photos.length}]
+				</h3>
+			) : null}
+
 			{getTemplate()}
 		</div>
 	);
