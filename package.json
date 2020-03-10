@@ -18,6 +18,11 @@
     "precommit": "lint-staged",
     "eslint": "eslint src/ --max-warnings=0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
+  },
   "lint-staged": {
     "*.{js, jsx}": [
       "npm run eslint",
