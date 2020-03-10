@@ -3,16 +3,13 @@ import { connect } from 'react-redux';
 import { User } from '../../components/User/User';
 import { Page } from '../../components/Page/Page';
 
-import { setYear } from '../../actions/PageActions';
+import { getPhotos } from '../../actions/PageActions';
 
-function App({ user, page, setYearAction }) {
+function App({ user, page, getPhotosAction }) {
 	return (
 		<div className="app">
-			<header className="header">
-				<h3 className="title">Мой топ фото</h3>
-			</header>
+			<Page {...page} getPhotos={getPhotosAction} />
 			<User name={user.name} />
-			<Page photos={page.photos} year={page.year} setYear={setYearAction} />
 		</div>
 	);
 }
@@ -26,7 +23,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		setYearAction: year => dispatch(setYear(year)),
+		getPhotosAction: year => dispatch(getPhotos(year)),
 	};
 };
 

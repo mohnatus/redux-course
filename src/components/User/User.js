@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export function User({ name }) {
 	return (
-		<div className="user">
+		<div className="user ib">
 			<p>Hello, {name}!</p>
 		</div>
 	);
