@@ -8,6 +8,8 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+console.log('store', store);
+
 ReactDOM.render(
 	<Provider store={store}>
 		<App />
