@@ -2,9 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './App.css';
 
-function App({ user }) {
+function App({ user, page }) {
 	console.log(user);
-	const { name, lastname, age } = user;
+	const { name, lastname } = user;
+	const { photos, year } = page;
+
 	return (
 		<div className="App">
 			<header className="App-header">
@@ -13,14 +15,17 @@ function App({ user }) {
 			<p>
 				Hello, {name} {lastname}!
 			</p>
-			<p>Are you {age} old?</p>
+			<p>
+				You have {photos.length} photos in {year} year
+			</p>
 		</div>
 	);
 }
 
-const mapStateToProps = store => {
+const mapStateToProps = ({ user, page }) => {
 	return {
-		user: store.user,
+		user,
+		page,
 	};
 };
 
