@@ -5,13 +5,11 @@ import { Page } from '../../components/Page/Page';
 
 import { setYear } from '../../actions/PageActions';
 
-import './App.css';
-
 function App({ user, page, setYearAction }) {
 	return (
-		<div className="App">
-			<header className="App-header">
-				<h1 className="App-title">Мой топ фото</h1>
+		<div className="app">
+			<header className="header">
+				<h3 className="title">Мой топ фото</h3>
 			</header>
 			<User name={user.name} />
 			<Page photos={page.photos} year={page.year} setYear={setYearAction} />

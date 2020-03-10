@@ -10,11 +10,11 @@ export function Page({ year, photos, setYear }) {
 	const years = [2014, 2015, 2016, 2017, 2018];
 
 	return (
-		<div>
+		<div className="page">
 			<div>
 				{years.map(year => {
 					return (
-						<button key={year} onClick={yearClickHandler}>
+						<button key={year} onClick={yearClickHandler} className="btn ">
 							{year}
 						</button>
 					);
