@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Page } from '../../components/Page/Page';
-import { getPhotosByYear } from '../../actions/PageActions';
+import { Page } from '../components/Page';
+import { getPhotosByYear } from '../actions/PageActions';
 
 function PageContainer({ name, page, getPhotos }) {
 	return <Page {...page} name={name} getPhotos={getPhotos} />;

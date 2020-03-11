@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getLastYears } from '../../util/date';
+import Gallery from './Gallery';
+import Button from './Button';
+import { getLastYears } from '../util/date';
 
 export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 	const yearClickHandler = e => {
@@ -24,14 +26,7 @@ export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 
 		return (
 			<div className="photos">
-				{photos.map(entry => (
-					<div key={entry.id} className="photo">
-						<p>
-							<img src={entry.sizes[0].url} alt="" />
-						</p>
-						<p>{entry.likes.count} ❤</p>
-					</div>
-				))}
+				<Gallery photos={photos} />
 			</div>
 		);
 	};
@@ -39,20 +34,18 @@ export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 	const years = getLastYears(5);
 
 	return (
-		<div className="ib page">
+		<div className="page">
 			<div className="filters">
 				{years.map(btnYear => {
-					const classes = ['btn'];
-					if (year === btnYear) classes.push('active');
 					return (
-						<button
+						<Button
 							key={btnYear}
 							onClick={yearClickHandler}
-							className={classes.join(' ')}
 							disabled={!name}
+							active={year === btnYear}
 						>
 							{btnYear}
-						</button>
+						</Button>
 					);
 				})}
 			</div>

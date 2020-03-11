@@ -1,7 +1,15 @@
+/**
+ * Действия юзера
+ */
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
+/**
+ * Авторизация через VK
+ * @param {Function} cb
+ */
 export function handleLogin(cb) {
 	return dispatch => {
 		dispatch({

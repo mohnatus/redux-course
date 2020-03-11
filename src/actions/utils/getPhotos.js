@@ -3,8 +3,13 @@ import { makeYearPhotos } from './makeYearPhotos';
 let photosArr = [];
 let cached = false;
 
+/**
+ * Загружает фотографии из VK порциями по 200
+ * @param {number} offset
+ * @param {Function} onSuccess
+ * @param {Function} onError
+ */
 const limit = 200;
-
 function loadPhotos(offset = 0, onSuccess, onError) {
 	let count = limit;
 
@@ -25,6 +30,12 @@ function loadPhotos(offset = 0, onSuccess, onError) {
 	});
 }
 
+/**
+ * Возвращает фотографии за определенный год
+ * @param {number} year
+ * @param {Function} onSuccess
+ * @param {Function} onError
+ */
 export function getPhotos(year, onSuccess, onError) {
 	if (cached) {
 		const photos = makeYearPhotos(photosArr, year);

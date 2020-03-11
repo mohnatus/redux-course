@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { User } from '../../components/User/User';
-import { handleLogin } from '../../actions/UserActions';
-import { getPhotosByYear } from '../../actions/PageActions';
-import { getCurrentYear } from '../../util/date';
+import { User } from '../components/User';
+import { handleLogin } from '../actions/UserActions';
+import { getPhotosByYear } from '../actions/PageActions';
+import { getCurrentYear } from '../util/date';
 
 function UserContainer(props) {
 	const handleLogin = () => {

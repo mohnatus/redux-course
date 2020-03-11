@@ -22,7 +22,7 @@ export function User({ name, error, isFetching, handleLogin }) {
 		}
 	};
 
-	return <div className="user ib">{getTemplate()}</div>;
+	return <div className="user">{getTemplate()}</div>;
 }
 
 User.propTypes = {
