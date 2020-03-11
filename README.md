@@ -1,68 +1,98 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Redux
 
-## Available Scripts
+## Хранилище
 
-In the project directory, you can run:
+Все данные уровня приложения хранятся в отдельном Хранилище (**Store**). Их нельзя менять напрямую - для взаимодействия Хранилище предоставляет ряд методов.
 
-### `yarn start`
+Создание Хранилища осуществляется функцией `createStore(rootReducer, [initialState], [enhancer])`.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+В коде: [store/configureStore.js](./src/store/configureStore.js).
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Для связки Redux с React используется пакет `react-redux`. Он предоставляет компонент `Provider`, который оборачивает приложение. Провайдеру нужно передать созданный объект Хранилища.
 
-### `yarn test`
+В коде: [index.js](./src/index.js).
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Действия
 
-### `yarn build`
+Чтобы внести изменения в Хранилище создаются Действия (**Actions**). Каждое Действие имеет тип (`type`), который однозначно определяет, какое изменение необходимо. Дополнительно Действие может иметь поле `payload`, содержащее любую вспомогательную информацию.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Действие - это простой объект, но для его создания используются функции - Создатели Действий (**Action creators**). Эти функции не являются частью Redux, но используются повсеместно, так как позволяют параметризировать объекты Действий.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Кроме того, Создатели Действий могут использоваться для асинхронных изменений хранилища (об этом позже).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+В коде:
 
-### `yarn eject`
+* Действия страницы (загрузка фотографий из VK) - [actions/PageActions.js](./src/actions/PageActions.js)
+* Действия юзера (авторизация через VK) - [actions/UserActions.js](./src/actions/UserActions.js)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Чтобы применить Действие используется метод `dispatch(Action)`, принадлежащий объекту хранилища.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+`react-redux` позволяет не работать с этим методом напрямую, а преобразовать его в пропсы компонента. Для этого используется функция `connect()`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Connect
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Функция `connect(mapStateToProps, mapDispatchToProps)` из пакета `react-redux` создает прослойку между методами хранилища и данными, которые в нем находятся, и компонентами react-приложения. Эта функция оборачивает компонент.
 
-## Learn More
+Функция `mapStateToProps(store)` получает объект хранилища и забирает из него нужные компоненту данные. Это автоматически привязывает компонент к этим данным. При их изменении компонент будет отрендерен заново.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Функция `mapDispatchToProps(dispatch)` получает метод `dispatch(action)`, который применяет Действие к хранилищу. Здесь можно создать все действия, которыми компонент будет пользоваться.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+В коде:
 
-### Code Splitting
+* Контейнер страницы - [containers/PageContainer.js](./src/containers/PageContainer.js)
+* Контейнер пользователя - [containers/UserContainer.js](./src/containers/UserContainer.js)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+## Редьюсеры
 
-### Analyzing the Bundle Size
+Между Действием и реальным изменением Хранилища находится Редьюсер (**Reducer**). Это простая чистая функция, которая принимает текущее состояние приложения (state) и Действие, которое должно на него повлиять. Редьюсер возвращает новое состояние (новый объект).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Редьюсер передается в функцию `createStore()` первым параметром, так как он непосредственно влияет на состояние приложения.
 
-### Making a Progressive Web App
+Redux позволяет разделить ответственность за состояние на несколько Редьюсеров. Для их объединения используется функция `combineReducers()`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+В коде:
 
-### Advanced Configuration
+* Редьюсер страницы (обрабатывает Действия страницы) - [reducers/page.js](./src/reducers/page.js)
+* Редьюсер пользователя (обрабатывает Действия пользователя) - [reducers/user.js](./src/reducers/user.js)
+* Корневой Редьюсер (объединяет Редьюсеры страницы и пользователя) - [reducers/index.js](./src/reducers/index.js)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+## Усилители
 
-### Deployment
+Усилители (**Enhancers**) в Redux - это middleware, которое располагается в цепочке между созданием Действия и его обработкой в Редьюсере. Таким образом, Усилители могут перехватывать Действие и производить какие-то сторонние эффекты, например, логировать его.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+Усилители должны быть переданы в функцию `createStore()`. Для этого используется функция `applyMiddleware()`.
 
-### `yarn build` fails to minify
+В коде: [store/configureStore.js](./src/store/configureStore.js).
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Усилитель - это функция в двух обертках. Первая (внешняя) обертка принимает параметром объект хранилища и сохраняет его в замыкании. Эту обертку разворачивает как раз `applyMiddleware()`.
+
+То, что осталось, вызывается методом `dispatch()`. Здесь снимается вторая обертка, которая получает функцию `next()`. Эта функция позволяет продолжить цепочку обработки Действия.
+
+И наконец остается сам Усилитель, который получает объект Действия.
+
+Кастомная реализация логгера-усилителя в коде: [store/enhancers/ping.js](./src/store/enhancers/ping.js).
+
+## Асинхронное изменение состояния
+
+Редьюсер ожидает на вход объект Действия - обычный объект с полем `type`. Создатели Действий должны этот объект возвращать. Он передается в `dispatch()`, проходит по всей цепочке Усилителей и попадает в Редьюсер.
+
+Такая схема не позволяет вызывать Действия асинхронно.
+
+Пример:
+
+При нажатии на кнопку должен отправляться запрос на сервер для получения некоторых данных.
+
+1. В `mapDispatchToProps(dispatch)` создаем функцию `getData()` и вызываем ее при клике на кнопку.
+2. Внутри `getData()` нам нужно задиспатчить Действие отправки запроса, чтобы состояние приложения изменилось и на страницу вывелся прелоадер.
+3. Пишем Создатель Действия, который отправит запрос и вернет объект Действия отправки запроса, который можно задиспатчить.
+4. Но когда вернется ответ с сервера, мы никак не сможем его обработать, ведь внутри Создателя Действия нет доступа к функции `dispatch()`.
+
+Можно, конечно, передать `dispatch` в Создатель действия внутри `mapDispatchToProps`, но это довольно грязный подход, который нарушает идею Создателей действий.
+
+Чтобы решить эту проблему, можно использовать Усилитель `redux-thunk`. Он позволяет возвращать из Создателя Действия не объект, а функцию. Когда эта функция попадает в Усилитель redux-thunk, он передает в нее метод `dispatch` и вызывает. (Усилитель имеет доступ к объекту Хранилища и его методам).
+
+В коде:
+
+* Подключение redux-thunk - [store/configureStore.js](./src/store/configureStore.js)
+* Действия страницы (загрузка фотографий из VK) - [actions/PageActions.js](./src/actions/PageActions.js)
+* Действия юзера (авторизация через VK) - [actions/UserActions.js](./src/actions/UserActions.js)
