@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './Button.scss';
-
 Button.propTypes = {
 	active: PropTypes.bool,
 	disabled: PropTypes.bool,
@@ -11,7 +9,7 @@ Button.propTypes = {
 
 function Button({ children, active, disabled, onClick }) {
 	const classes = ['btn'];
-	if (active) classes.push('active');
+	classes.push(active ? 'btn-primary' : 'btn-secondary');
 
 	return (
 		<button className={classes.join(' ')} disabled={disabled} onClick={onClick}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from './Button';
 
 export function User({ name, error, isFetching, handleLogin }) {
 	const getTemplate = () => {
@@ -15,14 +16,14 @@ export function User({ name, error, isFetching, handleLogin }) {
 			return <p>Привет, {name}!</p>;
 		} else {
 			return (
-				<button className="btn" onClick={handleLogin}>
+				<Button onClick={handleLogin} active>
 					Войти
-				</button>
+				</Button>
 			);
 		}
 	};
 
-	return <div className="user">{getTemplate()}</div>;
+	return <div className="user py-4">{getTemplate()}</div>;
 }
 
 User.propTypes = {

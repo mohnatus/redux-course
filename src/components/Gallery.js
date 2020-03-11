@@ -40,9 +40,17 @@ function Gallery({ photos }) {
 
 	return (
 		<>
-			{gallery.map(entry => {
-				return <Photo key={entry.id} {...entry} onClick={increase} />;
-			})}
+			<div className="gallery">
+				<div className="row">
+					{gallery.map(entry => {
+						return (
+							<div class="col-12 col-md-6 col-lg-4" key={entry.id}>
+								<Photo {...entry} onClick={increase} />
+							</div>
+						);
+					})}
+				</div>
+			</div>
 
 			{increasedId ? (
 				<LightBoxGallery

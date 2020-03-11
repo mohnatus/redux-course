@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Gallery from './Gallery';
 import Button from './Button';
 import { getLastYears } from '../util/date';
-
 export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 	const yearClickHandler = e => {
 		if (!name) return;
@@ -24,6 +23,10 @@ export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 			return <p>Загрузка...</p>;
 		}
 
+		if (!photos.length) {
+			return <p>Изображения за {year} год не найдены</p>;
+		}
+
 		return (
 			<div className="photos">
 				<Gallery photos={photos} />
@@ -34,8 +37,8 @@ export function Page({ name, year, photos, getPhotos, isFetching, error }) {
 	const years = getLastYears(5);
 
 	return (
-		<div className="page">
-			<div className="filters">
+		<div className="page py-4">
+			<div className="filters btn-group mb-4">
 				{years.map(btnYear => {
 					return (
 						<Button
