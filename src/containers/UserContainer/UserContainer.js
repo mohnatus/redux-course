@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { User } from '../../components/User/User';
 import { handleLogin } from '../../actions/UserActions';
-import { getPhotos } from '../../actions/PageActions';
+import { getPhotosByYear } from '../../actions/PageActions';
 import { getCurrentYear } from '../../util/date';
 
 function UserContainer(props) {
@@ -26,7 +26,7 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
 	return {
 		handleLogin: cb => dispatch(handleLogin(cb)),
-		getPhotos: year => dispatch(getPhotos(year)),
+		getPhotos: year => dispatch(getPhotosByYear(year)),
 	};
 };
 
